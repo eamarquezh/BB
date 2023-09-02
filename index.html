@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        body {
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        #jar-container {
+            width: 300px;
+            height: 400px;
+            background-image: url('https://cdn.pixabay.com/photo/2013/07/13/14/07/jar-162166_1280.png'); /* Reemplaza 'tu-imagen-mascara.png' con la ruta a tu imagen */
+            background-size: cover;
+            position: relative;
+        }
+        #water {
+            width: 100%;
+            height: 0%;
+            max-height: 60%;
+            opacity: .5;
+            background-color: blue;
+            position: absolute;
+            bottom: 0;
+            transition: height 3s;
+        }
+        #fill-button {
+            border-radius: 15px;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .bounce {
+            animation-name: bounce;
+        }
+
+        
+    </style>
+</head>
+<body>
+    <h1 class="titulo-dinamico">${numeroFinal}</h1>
+    <div id="jar-container">
+        <div id="water"></div>
+    </div>
+    <button id="fill-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-emoji-heart-eyes" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            <path d="M11.315 10.014a.5.5 0 0 1 .548.736A4.498 4.498 0 0 1 7.965 13a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .548-.736h.005l.017.005.067.015.252.055c.215.046.515.108.857.169.693.124 1.522.242 2.152.242.63 0 1.46-.118 2.152-.242a26.58 26.58 0 0 0 1.109-.224l.067-.015.017-.004.005-.002zM4.756 4.566c.763-1.424 4.02-.12.952 3.434-4.496-1.596-2.35-4.298-.952-3.434zm6.488 0c1.398-.864 3.544 1.838-.952 3.434-3.067-3.554.19-4.858.952-3.434z"/>
+          </svg>
+    </button>
+
+    <script>
+        const jarContainer = document.getElementById('jar-container');
+        const water = document.getElementById('water');
+        const fillButton = document.getElementById('fill-button');
+
+        window.addEventListener('load', () => {
+            jarContainer.classList.add('animate__animated', 'animate__bounce');
+            setTimeout(() => {
+                jarContainer.classList.remove('animate__animated', 'animate__bounce');
+                simulateFill();
+            }, 500);
+        });
+
+        fillButton.addEventListener('click', () => {
+            jarContainer.classList.add('animate__animated', 'animate__bounce');
+            setTimeout(() => {
+                jarContainer.classList.remove('animate__animated', 'animate__bounce');
+                simulateFill();
+            }, 500); 
+        });
+
+        function simulateFill() {
+            let currentHeight = parseFloat(getComputedStyle(water).height);
+            const targetHeight = 80; 
+
+            const fillInterval = setInterval(() => {
+                if (currentHeight < targetHeight) {
+                    currentHeight += 5;
+                    water.style.height = `${currentHeight}%`;
+                } else {
+                    clearInterval(fillInterval);
+                }
+            }, 50);
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const numeroFinal = 1700;
+            let numeroActual = 0;
+            const titulo = document.querySelector(".titulo-dinamico");
+            function actualizarTitulo() {
+                if (numeroActual <= numeroFinal) {
+                    titulo.innerHTML = `$ ${numeroActual}`;
+                    
+                    titulo.classList.add("animate__animated", "animate__fadeIn");
+                    numeroActual++;
+
+                    setTimeout(() => {
+                        titulo.classList.remove("animate__animated", "animate__fadeIn");
+                        actualizarTitulo();
+                    }, 1);
+                }
+            }
+
+            actualizarTitulo();
+        });
+    </script>
+</body>
+</html>
